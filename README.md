@@ -19,16 +19,21 @@
 
 ## items テーブル
 
-| Column      | Type       | Options                           |
-| ----------- | ---------- | --------------------------------- |
-| name        | string     | null: false                       |
-| text        | text       | null: false                       |
-| price       | integer    | null: false                       |
-| user        | references | null: false, foreign_key: true    |
+| Column        | Type       | Options                           |
+| ------------- | ---------- | --------------------------------- |
+| name          | string     | null: false                       |
+| text          | text       | null: false                       |
+| category      | string     | null: false                       |
+| condition     | string     | null: false                       |
+| shopping_fee  | string     | null: false                       |
+| prefecture    | string     | null: false                       |
+| shopping_days | string     | null: false                       |
+| price         | integer    | null: false                       |
+| user          | references | null: false, foreign_key: true    |
 
 ### Association
-- belongs_to :buys
-- belongs_to :users
+- belongs_to :buy
+- belongs_to :user
 
 ## buys テーブル
 
@@ -38,8 +43,8 @@
 | user        | references | null: false, foreign_key: true|
 
 ### Association
-- belongs_to :users
-- has_many :items
+- belongs_to :user
+- has_one :items
 - has_one :addresses
 
 ## addresses テーブル
@@ -47,7 +52,6 @@
 | Column             | Type       | Options                       |
 | ------------------ | ---------- | ----------------------------- |
 | code               | string     | null: false                   |
-| prefecture         | string     | null: false                   |
 | city               | string     | null: false                   |
 | street             | string     | null: false                   |
 | building           | string     |                               |
@@ -55,4 +59,4 @@
 | buy                | references | null: false, foreign_key: true|
 
 ### Association
-- belongs_to :buys
+- belongs_to :buy
