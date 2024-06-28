@@ -19,20 +19,20 @@
 
 ## items テーブル
 
-| Column        | Type       | Options                           |
-| ------------- | ---------- | --------------------------------- |
-| name          | string     | null: false                       |
-| text          | text       | null: false                       |
-| category      | string     | null: false                       |
-| condition     | string     | null: false                       |
-| shopping_fee  | string     | null: false                       |
-| prefecture    | string     | null: false                       |
-| shopping_days | string     | null: false                       |
-| price         | integer    | null: false                       |
-| user          | references | null: false, foreign_key: true    |
+| Column           | Type       | Options                           |
+| ---------------- | ---------- | --------------------------------- |
+| name             | string     | null: false                       |
+| text             | text       | null: false                       |
+| category_id      | integer    | null: false                       |
+| condition_id     | integer    | null: false                       |
+| shopping_fee_id  | integer    | null: false                       |
+| prefecture_id    | integer    | null: false                       |
+| shopping_days_id | integer    | null: false                       |
+| price            | integer    | null: false                       |
+| user             | references | null: false, foreign_key: true    |
 
 ### Association
-- belongs_to :buy
+- has_one :buy
 - belongs_to :user
 
 ## buys テーブル
@@ -44,14 +44,15 @@
 
 ### Association
 - belongs_to :user
-- has_one :items
-- has_one :addresses
+- belongs_to :item
+- has_one :address
 
 ## addresses テーブル
 
 | Column             | Type       | Options                       |
 | ------------------ | ---------- | ----------------------------- |
 | code               | string     | null: false                   |
+| prefecture_id      | integer    | null: false                   |
 | city               | string     | null: false                   |
 | street             | string     | null: false                   |
 | building           | string     |                               |
