@@ -16,4 +16,5 @@ class User < ApplicationRecord
     validates :family_name_kana
   end
   validates :birth_day, presence: true
+  has_many :items
 end
