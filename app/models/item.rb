@@ -7,7 +7,12 @@ class Item < ApplicationRecord
   belongs_to :shopping_day
   belongs_to :user
   has_one_attached :image
-  validates :name, :description, :category_id, :condition_id, :shopping_fee_id, :prefecture_id, :shopping_day_id, :price, :image, presence: true
-  validates :category_id, :condition_id, :shopping_fee_id, :prefecture_id, :shopping_day_id, numericality: { other_than: 1 }
+  with_options presence: true do
+    validates :name, :description, :price, :image
+    validates :category_id, :condition_id, :shopping_fee_id, :prefecture_id, :shopping_day_id
+  end
+  with_options numericality: { other_than: 1 } do
+    validates :category_id, :condition_id, :shopping_fee_id, :prefecture_id, :shopping_day_id
+  end
   
 end
