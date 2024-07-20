@@ -1,15 +1,15 @@
 class BuysController < ApplicationController
   before_action :authenticate_user!, only: [:index, :create]
-  before_action :move_to_index, only: [:index]
+  before_action :move_to_index, only: [:index, :create]
   
 
   def index
-    @item = Item.find(params[:item_id])
+    @item = find _item
     if @item.buy.present? 
       redirect_to root_path
     end
     gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
-    @item = Item.find(params[:item_id])
+    @item = find_item
     @buy_address = BuyAddress.new
   end
 
@@ -32,6 +32,10 @@ class BuysController < ApplicationController
     params.require(:buy_address).permit(:code, :prefecture_id, :city, :street, :building, :phone_number).merge(user_id: current_user.id, item_id: params[:item_id],token: params[:token])
   end
 
+  def find_item
+    Item.find(params[:item_id])
+  end
+
   def pay_item
     Payjp.api_key = ENV["PAYJP_SECRET_KEY"]  # 自身のPAY.JPテスト秘密鍵を記述しましょう
       Payjp::Charge.create(
@@ -43,8 +47,8 @@ class BuysController < ApplicationController
 
   def move_to_index
     @item = Item.find(params[:item_id])
-    return if current_user.id == @item.user
-
-    redirect_to root_path
+    if current_user.id == @item.user # もし出品者が商品の所有者なら
+      redirect_to root_path # トップページにリダイレクト
+    end
   end
 end

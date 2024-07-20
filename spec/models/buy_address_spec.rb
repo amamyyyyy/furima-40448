@@ -54,6 +54,17 @@ RSpec.describe BuyAddress, type: :model do
         @buy_address.valid?
         expect(@buy_address.errors.full_messages).to include('Phone number は半角数字で入力してください')
       end
+      it 'phone_number9桁以下では登録できない' do
+        @buy_address.phone_number = '090123456'
+        @buy_address.valid?
+        expect(@buy_address.errors.full_messages).to include('Phone number は半角数字で入力してください')
+      end
+
+      it 'phone_numberが12桁以上では登録できない' do
+        @buy_address.phone_number = '090123456789'
+        @buy_address.valid?
+        expect(@buy_address.errors.full_messages).to include('Phone number は半角数字で入力してください')
+      end
       it '購入者記録が紐付いていないと保存できないこと' do
         @buy_address.user_id = nil
         @buy_address.valid?
