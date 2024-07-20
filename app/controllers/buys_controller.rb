@@ -1,5 +1,13 @@
 class BuysController < ApplicationController
+  before_action :authenticate_user!, only: [:index, :create]
+  before_action :move_to_index, only: [:index]
+  
+
   def index
+    @item = Item.find(params[:item_id])
+    if @item.buy.present? 
+      redirect_to root_path
+    end
     gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
     @item = Item.find(params[:item_id])
     @buy_address = BuyAddress.new
@@ -31,5 +39,12 @@ class BuysController < ApplicationController
         card: buy_params[:token], # カードトークン
         currency: 'jpy' # 通貨の種類（日本円）
       )
+  end
+
+  def move_to_index
+    @item = Item.find(params[:item_id])
+    return if current_user.id == @item.user
+
+    redirect_to root_path
   end
 end
