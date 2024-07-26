@@ -1,5 +1,6 @@
 class BuysController < ApplicationController
   before_action :authenticate_user!, only: [:index, :create]
+  before_action :set_item, only: [:index, :create]
   before_action :move_to_index, only: [:index, :create]
   
 
@@ -38,10 +39,11 @@ class BuysController < ApplicationController
       )
   end
 
-  def move_to_index
+  def set_item
     @item = Item.find(params[:item_id])
-    if current_user.id == @item.user # もし出品者が商品の所有者なら
-      redirect_to root_path # トップページにリダイレクト
-    end
+  end
+
+  def move_to_index
+    redirect_to root_path if current_user.id == @item.user.id
   end
 end
